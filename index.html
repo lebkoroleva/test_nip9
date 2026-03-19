@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Методичка: Задача №9 (Координаты)</title>
+    <style>
+        :root {
+            --navy: #0F1A2E;
+            --purple: #3C2E54;
+            --steel: #5D6C83;
+            --graphite: #1C1C1C;
+            --white: #FFFFFF;
+            --bg-grid: #f4f6f8;
+            --light-bg: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-grid);
+            /* Тонкая сетка на фоне */
+            background-image: 
+                linear-gradient(var(--steel) 1px, transparent 1px),
+                linear-gradient(90deg, var(--steel) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: center top;
+            color: var(--graphite);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: var(--white);
+            padding: 50px;
+            box-shadow: 0 10px 30px rgba(15, 26, 46, 0.15);
+            border-radius: 8px;
+            position: relative;
+        }
+
+        /* Декоративная полоса сверху */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: repeating-linear-gradient(
+                45deg,
+                var(--navy),
+                var(--navy) 10px,
+                var(--purple) 10px,
+                var(--purple) 20px
+            );
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        h1 {
+            color: var(--navy);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            border-bottom: 2px solid var(--steel);
+            padding-bottom: 20px;
+        }
+
+        h2 {
+            color: var(--purple);
+            margin-top: 40px;
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+        }
+
+        h2::before {
+            content: '#';
+            margin-right: 10px;
+            color: var(--steel);
+            font-weight: bold;
+        }
+
+        p {
+            font-size: 1.05rem;
+            color: var(--graphite);
+            margin-bottom: 15px;
+        }
+
+        .highlight-box {
+            background: var(--light-bg);
+            border-left: 5px solid var(--purple);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .math-rule {
+            font-family: 'Courier New', Courier, monospace;
+            background: var(--navy);
+            color: var(--white);
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /* Галерея изображений */
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .img-card {
+            border: 2px solid var(--steel);
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .img-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .img-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-bottom: 1px solid #eee;
+        }
+
+        .img-caption {
+            padding: 12px;
+            font-size: 0.9rem;
+            color: var(--navy);
+            font-weight: 600;
+            text-align: center;
+            background: #fafafa;
+        }
+
+        /* Блок кода */
+        pre {
+            background: var(--navy);
+            color: #e0e0e0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            border: 1px solid var(--purple);
+            line-height: 1.4;
+        }
+
+        .keyword { color: #ff79c6; }
+        .func { color: #8be9fd; }
+        .string { color: #f1fa8c; }
+        .comment { color: #6272a4; font-style: italic; }
+        .number { color: #bd93f9; }
+        .operator { color: #ffb86c; }
+
+        /* Таблица Excel */
+        .excel-container {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            overflow: hidden;
+            font-family: 'Calibri', 'Arial', sans-serif;
+            font-size: 14px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .excel-header {
+            background: #f3f3f3;
+            border-bottom: 1px solid #ccc;
+            padding: 10px 15px;
+            font-weight: bold;
+            color: var(--navy);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .excel-grid {
+            display: grid;
+            grid-template-columns: 40px 80px 80px 80px 80px 100px;
+            background: #fff;
+        }
+
+        .cell {
+            border: 1px solid #e0e0e0;
+            padding: 6px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cell.header {
+            background: #f8f9fa;
+            font-weight: bold;
+            color: var(--steel);
+            font-size: 12px;
+        }
+
+        .cell.row-num {
+            background: #f0f0f0;
+            color: #666;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .formula-bar {
+            grid-column: 2 / -1;
+            background: #fff;
+            text-align: left;
+            font-family: 'Consolas', monospace;
+            color: var(--purple);
+            padding: 8px 12px;
+            border-top: 2px solid var(--navy);
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .formula-label {
+            font-weight: bold;
+            color: var(--steel);
+            margin-right: 10px;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        .success-cell {
+            background-color: #d4edda;
+            color: #155724;
+            font-weight: bold;
+        }
+        
+        .fail-cell {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Таблица пояснения ЗНАК */
+        .sign-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95rem;
+        }
+        .sign-table th, .sign-table td {
+            border: 1px solid var(--steel);
+            padding: 10px;
+            text-align: center;
+        }
+        .sign-table th {
+            background-color: var(--navy);
+            color: white;
+        }
+        .sign-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        footer {
+            margin-top: 60px;
+            text-align: center;
+            color: var(--steel);
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 20px; margin: 10px; }
+            .excel-grid { font-size: 10px; }
+            .cell { padding: 4px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Задача №9: Анализ координат</h1>
+    <p><strong>Условие:</strong> В файле даны координаты двух точек $(x_1, y_1)$ и $(x_2, y_2)$. Найдите количество пар, образующих отрезок, который <u>не пересекает ни ось X, ни ось Y</u>.</p>
+
+    <div class="highlight-box">
+        <h3>💡 Логика решения</h3>
+        <p>Отрезок не пересекает оси координат только тогда, когда обе точки находятся в <strong>одной четверти</strong>. Это означает, что знаки соответствующих координат должны совпадать.</p>
+        <div class="math-rule">
+            Условие: (Знак x₁ == Знак x₂) И (Знак y₁ == Знак y₂)
+        </div>
+    </div>
+
+    <h2>1. Визуализация</h2>
+    <p>Разберем возможные варианты расположения отрезков.</p>
+
+    <div class="image-gallery">
+        <!-- Замените src на имена ваших файлов -->
+        <div class="img-card">
+            <img src="img1.png" alt="Четыре четверти" onerror="this.src='https://placehold.co/600x400/0F1A2E/FFF?text=Img+1:+Quadrants'">
+            <div class="img-caption">Рис 1. Четыре четверти плоскости</div>
+        </div>
+        
+        <div class="img-card">
+            <img src="img2.png" alt="Верный случай" onerror="this.src='https://placehold.co/600x400/0F1A2E/FFF?text=Img+2:+Valid'">
+            <div class="img-caption">Рис 2. ✅ Верно: Одна четверть</div>
+        </div>
+
+        <div class="img-card">
+            <img src="img3.png" alt="Пересечение X" onerror="this.src='https://placehold.co/600x400/0F1A2E/FFF?text=Img+3:+Invalid+X'">
+            <div class="img-caption">Рис 3. ❌ Ошибка: Пересечение оси X</div>
+        </div>
+
+        <div class="img-card">
+            <img src="img4.png" alt="Пересечение Y" onerror="this.src='https://placehold.co/600x400/0F1A2E/FFF?text=Img+4:+Invalid+Y'">
+            <div class="img-caption">Рис 4. ❌ Ошибка: Пересечение оси Y</div>
+        </div>
+        
+        <div class="img-card" style="grid-column: 1 / -1;">
+            <img src="img5.png" alt="Сводная схема" onerror="this.src='https://placehold.co/1200x400/0F1A2E/FFF?text=Img+5:+Summary'">
+            <div class="img-caption">Рис 5. Сводная таблица всех случаев</div>
+        </div>
+    </div>
+
+    <h2>2. Решение в Excel: Функция ЗНАК</h2>
+    <p>Для проверки совпадения знаков удобно использовать функцию <code>ЗНАК(number)</code> (в английской версии <code>SIGN</code>).</p>
+    
+    <div class="highlight-box">
+        <p><strong>Как работает функция:</strong></p>
+        <ul>
+            <li>Если число положительное (>0) → возвращает <strong>1</strong></li>
+            <li>Если число отрицательное (<0) → возвращает <strong>-1</strong></li>
+            <li>Если число равно 0 → возвращает <strong>0</strong></li>
+        </ul>
+        <p>Если знаки двух чисел одинаковы, то и результат функции <code>ЗНАК</code> для них будет одинаковым.</p>
+    </div>
+
+    <table class="sign-table">
+        <thead>
+            <tr>
+                <th>Число A</th>
+                <th>Число B</th>
+                <th>ЗНАК(A)</th>
+                <th>ЗНАК(B)</th>
+                <th>Совпадают?</th>
+                <th>Пересекает ось?</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>5</td>
+                <td>3</td>
+                <td>1</td>
+                <td>1</td>
+                <td>✅ Да</td>
+                <td>Нет</td>
+            </tr>
+            <tr>
+                <td>-2</td>
+                <td>-5</td>
+                <td>-1</td>
+                <td>-1</td>
+                <td>✅ Да</td>
+                <td>Нет</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>-2</td>
+                <td>1</td>
+                <td>-1</td>
+                <td>❌ Нет</td>
+                <td>Да (ось Y)</td>
+            </tr>
+            <tr>
+                <td>0</td>
+                <td>5</td>
+                <td>0</td>
+                <td>1</td>
+                <td>❌ Нет</td>
+                <td>Да (касается)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><strong>Формула для Excel:</strong></p>
+    <p>Предположим, данные в столбцах A, B, C, D. В столбце E пишем:</p>
+    
+    <div class="excel-container">
+        <div class="excel-header">
+            <span>Лист1</span>
+            <span style="font-size: 0.8em; color: #666;">Проверка условия</span>
+        </div>
+        <div class="excel-grid">
+            <!-- Headers -->
+            <div class="cell header"></div>
+            <div class="cell header">A (x₁)</div>
+            <div class="cell header">B (y₁)</div>
+            <div class="cell header">C (x₂)</div>
+            <div class="cell header">D (y₂)</div>
+            <div class="cell header">E (Итог)</div>
+            
+            <!-- Row Valid -->
+            <div class="cell row-num">2</div>
+            <div class="cell">5</div>
+            <div class="cell">3</div>
+            <div class="cell">2</div>
+            <div class="cell">4</div>
+            <div class="cell success-cell">1</div>
+            
+            <!-- Row Invalid -->
+            <div class="cell row-num">3</div>
+            <div class="cell">-2</div>
+            <div class="cell">5</div>
+            <div class="cell">4</div>
+            <div class="cell">2</div>
+            <div class="cell fail-cell">0</div>
+
+            <!-- Formula Bar -->
+            <div class="formula-bar">
+                <span class="formula-label">Формула:</span>
+                =ЕСЛИ(И(ЗНАК(A2)=ЗНАК(C2); ЗНАК(B2)=ЗНАК(D2)); 1; 0)
+            </div>
+        </div>
+    </div>
+    <p style="margin-top: 10px; font-size: 0.9em; color: var(--steel);">
+        * Протяните формулу вниз и просуммируйте столбец E: <code>=СУММ(E:E)</code>.
+    </p>
+
+    <h2>3. Решение на Python (Без библиотек)</h2>
+    <p>Этот скрипт читает файл построчно (как текст), разбивает строку на части и проверяет условие. Он не требует установки pandas и работает быстро.</p>
+    <p><em>Примечание: Скрипт ожидает, что числа в строке разделены пробелами или табуляцией.</em></p>
+
+<pre><code><span class="comment"># Открываем файл для чтения</span>
+filename = <span class="string">'9-132.txt'</span>  <span class="comment"># Или .csv, если сохраните как текст</span>
+count = <span class="number">0</span>
+
+<span class="keyword">try</span>:
+    <span class="keyword">with</span> open(filename, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:
+        <span class="keyword">for</span> line <span class="keyword">in</span> f:
+            <span class="comment"># Убираем лишние пробелы по краям и разбиваем строку</span>
+            <span class="comment"># split() без аргументов делит по любым пробелам/табуляциям</span>
+            parts = line.strip().split()
+            
+            <span class="comment"># Проверка: должно быть ровно 4 числа</span>
+            <span class="keyword">if</span> len(parts) != <span class="number">4</span>:
+                <span class="keyword">continue</span>
+            
+            <span class="comment"># Преобразуем строки в целые числа</span>
+            x1 = int(parts[<span class="number">0</span>])
+            y1 = int(parts[<span class="number">1</span>])
+            x2 = int(parts[<span class="number">2</span>])
+            y2 = int(parts[<span class="number">3</span>])
+            
+            <span class="comment"># Логика проверки:</span>
+            <span class="comment"># 1. Знаки X совпадают (произведение > 0)</span>
+            <span class="comment"># 2. Знаки Y совпадают (произведение > 0)</span>
+            <span class="keyword">if</span> (x1 * x2 > <span class="number">0</span>) <span class="keyword">and</span> (y1 * y2 > <span class="number">0</span>):
+                count += <span class="number">1</span>
+
+    <span class="func">print</span>(<span class="string">f"Ответ: {count}"</span>)
+
+<span class="keyword">except</span> FileNotFoundError:
+    <span class="func">print</span>(<span class="string">"Файл не найден! Проверьте имя файла."</span>)
+<span class="keyword">except</span> ValueError:
+    <span class="func">print</span>(<span class="string">"Ошибка в данных: проверьте, что в файле только целые числа."</span>)</code></pre>
+
+    <footer>
+        <p>Методическое пособие. Стиль: Hand-drawn Infographic.<br>
+        Подготовлено для учеников.</p>
+    </footer>
+</div>
+
+</body>
+</html>
